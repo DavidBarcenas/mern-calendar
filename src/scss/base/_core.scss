@@ -1,0 +1,32 @@
+html {
+  box-sizing: border-box;
+  line-height: 1.6;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Roboto, Helvetica,  Arial, sans-serif;
+  font-size: 16px;
+  overflow-x: hidden;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  margin: 0;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+img {
+  display: block;
+}
