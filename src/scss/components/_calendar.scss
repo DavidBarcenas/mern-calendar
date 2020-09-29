@@ -1,0 +1,14 @@
+.calendar__wrapper {
+  min-height: calc(100vh - 64px);
+
+  .rbc-calendar {
+    height: calc(100vh - 64px);
+    margin: auto;
+    padding: 0;
+    width: 97%;
+  }
+
+  .rbc-toolbar {
+    padding: 1em 0;
+  }
+}
