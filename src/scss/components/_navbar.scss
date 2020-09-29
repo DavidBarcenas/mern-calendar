@@ -1,0 +1,30 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+
+  &__title {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  &__username {
+    margin-left: 2em;
+    border-left: 1px solid rgba(#fff, .5);
+    padding-left: 2em;
+    display: none;
+
+    @media (min-width: 768px) {
+      display: inline-block;
+    }
+  }
+
+  .MuiButton-root {
+    color: #fff;
+
+    span {
+      margin-left: .5em;
+      font-weight: normal;
+      text-transform: initial;
+    }
+  }
+}
