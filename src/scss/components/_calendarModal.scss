@@ -1,0 +1,24 @@
+.calendarModal {
+
+  .MuiDialog-paperWidthSm {
+    border-top: 10px solid $primary;
+  }
+
+  .MuiFormControl-root {
+    width: 100%;
+    margin-bottom: 1.5em;
+
+    &:nth-child(1),
+    &:nth-child(2) {
+      width: 45%;
+    }
+
+    &:nth-child(1) {
+      margin-right: 10%;
+    }
+  }
+
+  .MuiDialogActions-root {
+    padding: 8px 24px 16px;
+  }
+}
