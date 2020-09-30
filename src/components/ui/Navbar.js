@@ -3,7 +3,7 @@ import { AppBar, Button, Icon, Toolbar } from '@material-ui/core'
 
 export const Navbar = () => {
   return (
-    <AppBar position="static">
+    <AppBar position="static" className="navbar__wrap">
       <Toolbar className="navbar">
         <div>
           <span className="navbar__title">Calendar App</span>
