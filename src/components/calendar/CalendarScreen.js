@@ -4,6 +4,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 import { Navbar } from '../ui/Navbar'
 import { messages_es } from '../../utils/messages-es'
 import { CalendarEvent } from './CalendarEvent'
+import { CalendarModal } from './CalendarModal'
 
 import 'moment/locale/es-mx'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
@@ -25,6 +26,8 @@ const myEventsList = [{
 export const CalendarScreen = () => {
 
   const [lastView, setLastView] = useState( localStorage.getItem('lastView') || 'month' )
+  const [open, setOpen] = useState(false);
+  const [event, setEvent] = useState({});
   
   const onDoubleClick = (e) => {
     console.log('el double click', e)
@@ -32,6 +35,8 @@ export const CalendarScreen = () => {
   
   const onSelectEvent = (e) => {
     console.log('onSelect', e)
+    setOpen(true);
+    setEvent(e)
   }
 
   const onViewChange = (e) => {
@@ -73,6 +78,8 @@ export const CalendarScreen = () => {
           }}
         />
       </div>
+
+      <CalendarModal open={open} setOpen={setOpen} event={event} />
     </div>
   )
 }
