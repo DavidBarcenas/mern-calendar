@@ -8,28 +8,80 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export const CalendarModal = ({ event, open, setOpen  }) => {
 
-  const [date, setDate] = useState({
-    start: '',
-    end: '',
+  const [inputError, setInputError] = useState({
+    startError: false,
+    endError:   false,
+    titleError: false
   })
-  
-  const handleStartDate = e => {
-    setDate({
-      ...date,
-      start: moment(e.target.value).toDate()
+
+  const [formValues, setFormValues] = useState({
+    title: 'Evento',
+    notes: '',
+    start: '',
+    end:   ''
+  })
+
+  const { title, notes, start, end } = formValues
+  const { startError, endError, titleError } = inputError
+
+  const handleInputChange = ({ target }) => {
+    setFormValues({
+      ...formValues,
+      [target.name]: target.value
     })
+
+    
   }
-  
-  const handleEndDate = e => {
-    setDate({
-      ...date,
-      end: moment(e.target.value).toDate()
+
+  const validateForm = () => {
+    let startDay = moment(start)
+    let endDate = moment(end)    
+
+    setInputError({ 
+      startError: !startDay.isValid(),
+      endError:   !endDate.isValid(),
     })
+    
+    if (!startDay.isValid() || !endDate.isValid()) {
+      return false
+    }
+
+    if (title.trim().length <= 2) {
+      setInputError({
+        ...formValues,
+        titleError: true,
+      })
+      return false;
+    }
+
+    if (startDay.isSameOrAfter( endDate )) {
+      setInputError({
+        ...formValues,
+        endError: true,
+      })
+      return false;
+    }
+
+    setInputError({ 
+      startError: false,
+      endError:   false,
+      titleError: false
+    })
+
+    return true;
+  }
+
+  const handleSubmit = () => {
+    console.log('form', validateForm())
+
+    if( validateForm() ) {
+      console.log('el value', formValues)
+    }
   }
 
   return (
     <Dialog
-      open={open}
+      open={true}
       TransitionComponent={Transition}
       keepMounted
       onClose={() => setOpen(false)}
@@ -42,29 +94,40 @@ export const CalendarModal = ({ event, open, setOpen  }) => {
       <DialogContent>
       <form noValidate autoComplete="off">
         <TextField
-          onChange={ handleStartDate }
+          onChange={ handleInputChange }
+          error={ startError }
           id="datetime-local"
           label="Fecha y hora de inicio"
           type="datetime-local"
-          name="startDate"
+          name="start"
+          helperText={ startError ? 'Este campo es obligatorio' : ''}
           InputLabelProps={{
             shrink: true,
           }}
         />
         <TextField
-          onChange={ handleEndDate }
-          error={ date.end < date.start }
+          onChange={ handleInputChange }
+          error={ endError }
           id="datetime-local"
           label="Fecha y hora final"
           type="datetime-local"
-          name="endDate"
-          helperText={ date.end < date.start ? 'La fecha final no puede ser menor a la de inicio' : ''}
+          name="end"
+          helperText={ endError ? 'Este campo es obligatorio y no puede ser menor a la fecha de inicio' : ''}
           InputLabelProps={{
             shrink: true
           }}
         />
 
-        <TextField id="outlined-basic" label="Titulo" variant="outlined" name="title" />
+        <TextField 
+          id="outlined-basic" 
+          label="Titulo" 
+          name="title" 
+          variant="outlined" 
+          value={ title }
+          error={ titleError }
+          helperText={ titleError ? 'Este campo es obligatorio' : ''}
+          onChange={ handleInputChange } 
+        />
 
         <TextField
           id="outlined-multiline-static"
@@ -72,6 +135,9 @@ export const CalendarModal = ({ event, open, setOpen  }) => {
           multiline
           rows={4}
           variant="outlined"
+          name="notes"
+          value={ notes }
+          onChange={ handleInputChange } 
         />
       </form>
       </DialogContent>
@@ -79,7 +145,7 @@ export const CalendarModal = ({ event, open, setOpen  }) => {
         <Button onClick={() => setOpen(false)} color="primary">
           Cancelar
         </Button>
-        <Button variant="contained" onClick={() => setOpen(false)} color="primary" className="btn-primary">
+        <Button variant="contained" type="button" color="primary" className="btn-primary" onClick={ handleSubmit }>
           Guardar
         </Button>
       </DialogActions>
