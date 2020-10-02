@@ -5,16 +5,14 @@ import { CalendarScreen } from '../components/calendar/CalendarScreen'
 
 export const AppRouter = () => {
   return (
-    <div>
+    <Router>
       <div>
-        <Router>
-          <Switch>
-            <Route exact path='/login' component={ LoginScreen } />
-            <Route exact path='/' component={ CalendarScreen } />
-            <Redirect to='/' />
-          </Switch>
-        </Router>
+        <Switch>
+          <Route exact path='/login' component={ LoginScreen } />
+          <Route exact path='/' component={ CalendarScreen } />
+          <Redirect to='/' />
+        </Switch>
       </div>
-    </div>
+    </Router>
   )
 }

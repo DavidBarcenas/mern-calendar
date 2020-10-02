@@ -29,8 +29,6 @@ export const CalendarModal = ({ event, open, setOpen  }) => {
       ...formValues,
       [target.name]: target.value
     })
-
-    
   }
 
   const validateForm = () => {
@@ -41,7 +39,7 @@ export const CalendarModal = ({ event, open, setOpen  }) => {
       startError: !startDay.isValid(),
       endError:   !endDate.isValid(),
     })
-    
+
     if (!startDay.isValid() || !endDate.isValid()) {
       return false
     }
@@ -72,8 +70,6 @@ export const CalendarModal = ({ event, open, setOpen  }) => {
   }
 
   const handleSubmit = () => {
-    console.log('form', validateForm())
-
     if( validateForm() ) {
       console.log('el value', formValues)
     }
@@ -81,7 +77,7 @@ export const CalendarModal = ({ event, open, setOpen  }) => {
 
   return (
     <Dialog
-      open={true}
+      open={ open }
       TransitionComponent={Transition}
       keepMounted
       onClose={() => setOpen(false)}
@@ -95,6 +91,7 @@ export const CalendarModal = ({ event, open, setOpen  }) => {
       <form noValidate autoComplete="off">
         <TextField
           onChange={ handleInputChange }
+          onBlur={ validateForm }
           error={ startError }
           id="datetime-local"
           label="Fecha y hora de inicio"
@@ -107,6 +104,7 @@ export const CalendarModal = ({ event, open, setOpen  }) => {
         />
         <TextField
           onChange={ handleInputChange }
+          onBlur={ validateForm }
           error={ endError }
           id="datetime-local"
           label="Fecha y hora final"
@@ -127,6 +125,7 @@ export const CalendarModal = ({ event, open, setOpen  }) => {
           error={ titleError }
           helperText={ titleError ? 'Este campo es obligatorio' : ''}
           onChange={ handleInputChange } 
+          onBlur={ validateForm }
         />
 
         <TextField
