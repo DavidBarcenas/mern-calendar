@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
-import moment from 'moment'
+import { useDispatch } from 'react-redux'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import { Navbar } from '../ui/Navbar'
 import { messages_es } from '../../utils/messages-es'
 import { CalendarEvent } from './CalendarEvent'
 import { CalendarModal } from './CalendarModal'
+import moment from 'moment'
 
 import 'moment/locale/es-mx'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
+import { uiCloseModal, uiOpenModal } from '../../redux/actions/ui'
 
 moment.locale('es-mx')
 const localizer = momentLocalizer(moment)
@@ -25,23 +27,26 @@ const myEventsList = [{
 
 export const CalendarScreen = () => {
 
+  const dispatch = useDispatch()
   const [lastView, setLastView] = useState( localStorage.getItem('lastView') || 'month' )
-  const [open, setOpen] = useState(false);
-  const [event, setEvent] = useState({});
   
   const onDoubleClick = (e) => {
-    console.log('el double click', e)
+    console.log('abrir modal')
+    dispatch( uiOpenModal() )
   }
   
   const onSelectEvent = (e) => {
     console.log('onSelect', e)
-    setOpen(true);
-    setEvent(e)
   }
 
   const onViewChange = (e) => {
     setLastView(e)
     localStorage.setItem('lastView', e)
+  }
+
+  const closeModal = () => {
+    console.log('cerrar modal')
+    dispatch( uiCloseModal() )
   }
 
   const eventStyleGetter = (event, start, end, isSelected) => {
@@ -79,7 +84,7 @@ export const CalendarScreen = () => {
         />
       </div>
 
-      <CalendarModal open={open} setOpen={setOpen} event={event} />
+      <CalendarModal closeModal={ closeModal } />
     </div>
   )
 }
