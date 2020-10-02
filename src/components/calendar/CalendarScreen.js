@@ -10,6 +10,8 @@ import moment from 'moment'
 import 'moment/locale/es-mx'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { uiCloseModal, uiOpenModal } from '../../redux/actions/ui'
+import { eventSetActive } from '../../redux/actions/events'
+import { Fab, Icon } from '@material-ui/core'
 
 moment.locale('es-mx')
 const localizer = momentLocalizer(moment)
@@ -31,22 +33,24 @@ export const CalendarScreen = () => {
   const [lastView, setLastView] = useState( localStorage.getItem('lastView') || 'month' )
   
   const onDoubleClick = (e) => {
-    console.log('abrir modal')
     dispatch( uiOpenModal() )
   }
   
   const onSelectEvent = (e) => {
-    console.log('onSelect', e)
+    dispatch(eventSetActive(e))
+    dispatch( uiOpenModal() )
   }
 
   const onViewChange = (e) => {
     setLastView(e)
-    localStorage.setItem('lastView', e)
   }
 
   const closeModal = () => {
-    console.log('cerrar modal')
     dispatch( uiCloseModal() )
+  }
+
+  const btnAddNew = () => {
+    dispatch( uiOpenModal() )
   }
 
   const eventStyleGetter = (event, start, end, isSelected) => {
@@ -85,6 +89,10 @@ export const CalendarScreen = () => {
       </div>
 
       <CalendarModal closeModal={ closeModal } />
+
+      <Fab color="primary" aria-label="add" className="btn-new" onClick={ btnAddNew }>
+        <Icon>add</Icon>
+      </Fab>
     </div>
   )
 }
