@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide, TextField } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment'
+import { eventAddNew } from '../../redux/actions/events';
+import { uiCloseModal } from '../../redux/actions/ui';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ ref } { ...props } />;
@@ -10,6 +12,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export const CalendarModal = ({ closeModal }) => {
 
   const { modalOpen } = useSelector(state => state.ui)
+  const dispatch = useDispatch()
 
   const [inputError, setInputError] = useState({
     startError: false,
@@ -74,7 +77,16 @@ export const CalendarModal = ({ closeModal }) => {
 
   const handleSubmit = () => {
     if( validateForm() ) {
-      console.log('el value', formValues)
+      // console.log('el value', formValues)
+      dispatch(eventAddNew({ 
+        ...formValues, 
+        id: new Date().getTime() ,
+        user: {
+          _id: 'abc123',
+          name: 'David Barcenas'
+        }
+      }))
+      dispatch( uiCloseModal() )
     }
   }
 
