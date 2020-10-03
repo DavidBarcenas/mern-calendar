@@ -1,35 +1,26 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import { Navbar } from '../ui/Navbar'
 import { messages_es } from '../../utils/messages-es'
 import { CalendarEvent } from './CalendarEvent'
 import { CalendarModal } from './CalendarModal'
+import { uiOpenModal } from '../../redux/actions/ui'
+import { eventSetActive } from '../../redux/actions/events'
+import { Fab, Icon } from '@material-ui/core'
 import moment from 'moment'
 
 import 'moment/locale/es-mx'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import { uiCloseModal, uiOpenModal } from '../../redux/actions/ui'
-import { eventSetActive } from '../../redux/actions/events'
-import { Fab, Icon } from '@material-ui/core'
 
 moment.locale('es-mx')
 const localizer = momentLocalizer(moment)
 const formats = { timeGutterFormat: 'h A' }
 
-const myEventsList = [{
-  title: 'Proyecto nuevo',
-  start: moment().toDate(),
-  end: moment().add(2, 'hours').toDate(),
-  user: {
-    _id: '12354',
-    name: 'David Barcenas'
-  }
-}]
-
 export const CalendarScreen = () => {
 
   const dispatch = useDispatch()
+  const { events } = useSelector(state => state.calendar)
   const [lastView, setLastView] = useState( localStorage.getItem('lastView') || 'month' )
   
   const onDoubleClick = (e) => {
@@ -38,15 +29,10 @@ export const CalendarScreen = () => {
   
   const onSelectEvent = (e) => {
     dispatch(eventSetActive(e))
-    dispatch( uiOpenModal() )
   }
 
   const onViewChange = (e) => {
     setLastView(e)
-  }
-
-  const closeModal = () => {
-    dispatch( uiCloseModal() )
   }
 
   const btnAddNew = () => {
@@ -55,7 +41,8 @@ export const CalendarScreen = () => {
 
   const eventStyleGetter = (event, start, end, isSelected) => {
     const style = {
-      backgroundColor: '#3766FC',
+      backgroundColor: '#396afc',
+      borderLeft: '3px solid #396afc',
       borderRadius: '0',
       color: '#ffffff',
       display: 'block',
@@ -73,7 +60,7 @@ export const CalendarScreen = () => {
         <Calendar
           formats={ formats }
           localizer={ localizer }
-          events={ myEventsList }
+          events={ events }
           startAccessor="start"
           endAccessor="end"
           messages={ messages_es }
@@ -88,7 +75,7 @@ export const CalendarScreen = () => {
         />
       </div>
 
-      <CalendarModal closeModal={ closeModal } />
+      <CalendarModal />
 
       <Fab color="primary" aria-label="add" className="btn-new" onClick={ btnAddNew }>
         <Icon>add</Icon>

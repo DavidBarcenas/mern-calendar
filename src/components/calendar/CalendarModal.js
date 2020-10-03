@@ -1,34 +1,46 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide, TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment'
-import { eventAddNew } from '../../redux/actions/events';
+import { eventAddNew, eventSetActive } from '../../redux/actions/events';
 import { uiCloseModal } from '../../redux/actions/ui';
+import { dateFormat } from '../../utils/format';
+import moment from 'moment'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ ref } { ...props } />;
 });
 
-export const CalendarModal = ({ closeModal }) => {
+const initEvent = {
+  title: '',
+  notes: '',
+  start: '',
+  end:   ''
+}
 
-  const { modalOpen } = useSelector(state => state.ui)
+export const CalendarModal = () => {
+
   const dispatch = useDispatch()
-
+  const { modalOpen } = useSelector(state => state.ui)
+  const { activeEvent } = useSelector(state => state.calendar)
+  const [formValues, setFormValues] = useState(initEvent)
   const [inputError, setInputError] = useState({
     startError: false,
     endError:   false,
     titleError: false
   })
 
-  const [formValues, setFormValues] = useState({
-    title: 'Evento',
-    notes: '',
-    start: '',
-    end:   ''
-  })
-
   const { title, notes, start, end } = formValues
   const { startError, endError, titleError } = inputError
+
+  useEffect(() => {
+    if( activeEvent ) {
+      setFormValues({
+        ...activeEvent,
+        start: dateFormat(activeEvent.start),
+        end: dateFormat(activeEvent.end),
+      })
+    }
+  }, [activeEvent])
 
   const handleInputChange = ({ target }) => {
     setFormValues({
@@ -77,17 +89,24 @@ export const CalendarModal = ({ closeModal }) => {
 
   const handleSubmit = () => {
     if( validateForm() ) {
-      // console.log('el value', formValues)
       dispatch(eventAddNew({ 
         ...formValues, 
+        start: moment(start).toDate(),
+        end: moment(end).toDate(),
         id: new Date().getTime() ,
         user: {
           _id: 'abc123',
           name: 'David Barcenas'
         }
       }))
-      dispatch( uiCloseModal() )
+      closeModal()
     }
+  }
+
+  const closeModal = () => {
+    dispatch( uiCloseModal() )
+    dispatch( eventSetActive(null) )
+    setFormValues( initEvent )
   }
 
   return (
@@ -95,7 +114,6 @@ export const CalendarModal = ({ closeModal }) => {
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"
       className="calendarModal"
-      onClose={ closeModal }
       open={ modalOpen }
       TransitionComponent={ Transition }
       keepMounted
@@ -112,9 +130,11 @@ export const CalendarModal = ({ closeModal }) => {
             type="datetime-local"
             name="start"
             helperText={ startError ? 'Este campo es obligatorio' : ''}
+            value={ start }
             InputLabelProps={{
               shrink: true,
             }}
+            
           />
           <TextField
             onChange={ handleInputChange }
@@ -125,6 +145,7 @@ export const CalendarModal = ({ closeModal }) => {
             type="datetime-local"
             name="end"
             helperText={ endError ? 'Este campo es obligatorio y no puede ser menor a la fecha de inicio' : ''}
+            value={ end }
             InputLabelProps={{
               shrink: true
             }}

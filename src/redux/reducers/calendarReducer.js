@@ -4,6 +4,7 @@ import { types } from "../types/types"
 const initialState = {
   events: [{
     title: 'Proyecto nuevo',
+    notes: '',
     start: moment().toDate(),
     end: moment().add(2, 'hours').toDate(),
     user: {
@@ -11,7 +12,7 @@ const initialState = {
       name: 'David Barcenas'
     }
   }],
-  activeEvent: {}
+  activeEvent: null
 }
 
 export const calendarReducer = ( state = initialState, action ) => {
