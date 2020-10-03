@@ -3,6 +3,7 @@ import { types } from "../types/types"
 
 const initialState = {
   events: [{
+    id: new Date().getTime(),
     title: 'Proyecto nuevo',
     notes: '',
     start: moment().toDate(),
@@ -30,6 +31,14 @@ export const calendarReducer = ( state = initialState, action ) => {
       return {
         ...state,
         activeEvent: action.payload
+      }
+    
+    case types.eventUpdate:
+      return {
+        ...state,
+        events: state.events.map(
+          e => ( e.id === action.payload.id ) ? action.payload : e
+        )
       }
 
     default:

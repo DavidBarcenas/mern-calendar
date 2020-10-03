@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide, TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { eventAddNew, eventSetActive } from '../../redux/actions/events';
+import { eventAddNew, eventSetActive, eventUpdated } from '../../redux/actions/events';
 import { uiCloseModal } from '../../redux/actions/ui';
 import { dateFormat } from '../../utils/format';
 import moment from 'moment'
@@ -89,16 +89,25 @@ export const CalendarModal = () => {
 
   const handleSubmit = () => {
     if( validateForm() ) {
-      dispatch(eventAddNew({ 
-        ...formValues, 
-        start: moment(start).toDate(),
-        end: moment(end).toDate(),
-        id: new Date().getTime() ,
-        user: {
-          _id: 'abc123',
-          name: 'David Barcenas'
-        }
-      }))
+      if( activeEvent ) {
+        dispatch(eventUpdated({
+          ...formValues,
+          start: moment(start).toDate(),
+          end: moment(end).toDate(),
+        }))
+      } else {
+        dispatch(eventAddNew({ 
+          ...formValues, 
+          start: moment(start).toDate(),
+          end: moment(end).toDate(),
+          id: new Date().getTime() ,
+          user: {
+            _id: 'abc123',
+            name: 'David Barcenas'
+          }
+        }))
+      }
+
       closeModal()
     }
   }
