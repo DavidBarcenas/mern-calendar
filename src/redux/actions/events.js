@@ -1,7 +1,7 @@
 import { types } from "../types/types";
 
-export const eventAddNew = ( event ) => ({ 
-  type: types.eventAddNew, 
+export const addNewEvent = ( event ) => ({ 
+  type: types.addNewEvent, 
   payload: event 
 })
 
@@ -10,7 +10,9 @@ export const eventSetActive = ( event ) => ({
   payload: event 
 })
 
-export const eventUpdated = ( event ) => ({ 
-  type: types.eventUpdate, 
+export const updateEvent = ( event ) => ({ 
+  type: types.updateEvent, 
   payload: event 
 })
+
+export const deleteEvent = () => ({ type: types.deleteEvent })

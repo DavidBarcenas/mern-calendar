@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide, TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { eventAddNew, eventSetActive, eventUpdated } from '../../redux/actions/events';
+import { addNewEvent, deleteEvent, eventSetActive, updateEvent } from '../../redux/actions/events';
 import { uiCloseModal } from '../../redux/actions/ui';
 import { dateFormat } from '../../utils/format';
 import moment from 'moment'
@@ -39,6 +39,8 @@ export const CalendarModal = () => {
         start: dateFormat(activeEvent.start),
         end: dateFormat(activeEvent.end),
       })
+    } else {
+      setFormValues( initEvent )
     }
   }, [activeEvent])
 
@@ -90,13 +92,13 @@ export const CalendarModal = () => {
   const handleSubmit = () => {
     if( validateForm() ) {
       if( activeEvent ) {
-        dispatch(eventUpdated({
+        dispatch(updateEvent({
           ...formValues,
           start: moment(start).toDate(),
           end: moment(end).toDate(),
         }))
       } else {
-        dispatch(eventAddNew({ 
+        dispatch(addNewEvent({ 
           ...formValues, 
           start: moment(start).toDate(),
           end: moment(end).toDate(),
@@ -115,7 +117,13 @@ export const CalendarModal = () => {
   const closeModal = () => {
     dispatch( uiCloseModal() )
     dispatch( eventSetActive(null) )
-    setFormValues( initEvent )
+    // setFormValues( initEvent )
+  }
+
+  const handleDelete = () => {
+    dispatch(deleteEvent())
+    dispatch(uiCloseModal())
+    // setFormValues( initEvent )
   }
 
   return (
@@ -183,7 +191,11 @@ export const CalendarModal = () => {
         </form>
       </DialogContent>
       <DialogActions>
-        <Button onClick={ closeModal } color="primary"> Cancelar </Button>
+        {
+          activeEvent ? 
+            <Button onClick={ handleDelete } color="secondary"> Eliminar </Button> :
+            <Button onClick={ closeModal } color="primary"> Cancelar </Button>
+        }
         <Button variant="contained" type="button" color="primary" className="btn-primary" onClick={ handleSubmit }> Guardar </Button>
       </DialogActions>
     </Dialog>
