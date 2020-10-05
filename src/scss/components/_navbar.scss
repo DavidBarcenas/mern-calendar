@@ -26,6 +26,10 @@
 
   .MuiButton-root {
     color: #fff;
+    
+    .MuiIcon-root {
+      font-size: 18px;
+    }
 
     span {
       margin-left: .5em;

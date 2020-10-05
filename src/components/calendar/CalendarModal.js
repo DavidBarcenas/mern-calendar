@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide, TextField } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Icon, IconButton, Slide, TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNewEvent, deleteEvent, eventSetActive, updateEvent } from '../../redux/actions/events';
 import { uiCloseModal } from '../../redux/actions/ui';
@@ -135,7 +135,12 @@ export const CalendarModal = () => {
       TransitionComponent={ Transition }
       keepMounted
     >
-      <DialogTitle id="alert-dialog-slide-title">Crear un evento</DialogTitle>
+      <DialogTitle id="alert-dialog-slide-title">
+  <span>{ activeEvent && !activeEvent.slot ? 'Editar evento' : 'Crear evento'}</span>
+        <IconButton onClick={closeModal}>
+          <Icon>cancel</Icon>
+        </IconButton >
+      </DialogTitle>
       <DialogContent>
         <form noValidate autoComplete="off">
           <TextField

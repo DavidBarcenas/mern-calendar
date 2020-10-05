@@ -16,7 +16,11 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 
 moment.locale('es-mx')
 const localizer = momentLocalizer(moment)
-const formats = { timeGutterFormat: 'h A' }
+const formats = { 
+  timeGutterFormat: 'h a', 
+  eventTimeRangeFormat: ({ start, end }) =>
+  moment(start).format('h:mma') + ' - ' + moment(end).format('h:mma')
+}
 
 export const CalendarScreen = () => {
 
@@ -37,7 +41,7 @@ export const CalendarScreen = () => {
   }
 
   const handleSelectSlot = (e) => {
-    const event = eventFormat(e)
+    let event = eventFormat(e)
     if( e.action === 'doubleClick' && !activeEvent ) {
       event.slot = true
       dispatch(eventSetActive(event))
@@ -56,6 +60,7 @@ export const CalendarScreen = () => {
       borderRadius: '0',
       color: '#ffffff',
       display: 'block',
+      fontSize: '14px',
       opacity: 0.8,
     }
 

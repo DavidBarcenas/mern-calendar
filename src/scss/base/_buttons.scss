@@ -1,5 +1,9 @@
 .btn-primary.MuiButton-containedPrimary {
   background: $secondary;
+
+  &:hover {
+    background: lighten($color: $secondary, $amount: 5);
+  }
 }
 
 .btn-new.MuiFab-root {
@@ -7,4 +11,8 @@
   bottom: 1em;
   right: 1.5em;
   background: #F50057;
+
+  &:hover {
+    background: lighten($color: #F50057, $amount: 10);
+  }
 }

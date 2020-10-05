@@ -11,4 +11,18 @@
   .rbc-toolbar {
     padding: 1em 0;
   }
+
+  .rbc-time-content > .rbc-time-gutter {
+    justify-content: flex-end;
+    width: 56px;
+  }
+
+  .rbc-label {
+    font-size: 12px;
+  }
+  
+  .rbc-time-slot {
+    text-align: right;
+    margin-top: 5px;
+  }
 }
