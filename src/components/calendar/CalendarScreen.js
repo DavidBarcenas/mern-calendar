@@ -8,6 +8,7 @@ import { CalendarModal } from './CalendarModal'
 import { uiOpenModal } from '../../redux/actions/ui'
 import { eventSetActive } from '../../redux/actions/events'
 import { Fab, Icon } from '@material-ui/core'
+import { eventFormat } from '../../utils/format'
 import moment from 'moment'
 
 import 'moment/locale/es-mx'
@@ -20,7 +21,7 @@ const formats = { timeGutterFormat: 'h A' }
 export const CalendarScreen = () => {
 
   const dispatch = useDispatch()
-  const { events } = useSelector(state => state.calendar)
+  const { events, activeEvent } = useSelector(state => state.calendar)
   const [lastView, setLastView] = useState( localStorage.getItem('lastView') || 'month' )
   
   const onDoubleClick = (e) => {
@@ -33,6 +34,15 @@ export const CalendarScreen = () => {
 
   const onViewChange = (e) => {
     setLastView(e)
+  }
+
+  const handleSelectSlot = (e) => {
+    const event = eventFormat(e)
+    if( e.action === 'doubleClick' && !activeEvent ) {
+      event.slot = true
+      dispatch(eventSetActive(event))
+      dispatch( uiOpenModal() )
+    }
   }
 
   const btnAddNew = () => {
@@ -68,6 +78,8 @@ export const CalendarScreen = () => {
           onDoubleClickEvent={ onDoubleClick }
           onSelectEvent={ onSelectEvent }
           onView={ onViewChange }
+          onSelectSlot={ handleSelectSlot }
+          selectable={ true }
           view={ lastView }
           components={{
             event: CalendarEvent

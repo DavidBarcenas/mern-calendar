@@ -91,7 +91,7 @@ export const CalendarModal = () => {
 
   const handleSubmit = () => {
     if( validateForm() ) {
-      if( activeEvent ) {
+      if( activeEvent && !activeEvent.slot ) {
         dispatch(updateEvent({
           ...formValues,
           start: moment(start).toDate(),
@@ -192,7 +192,7 @@ export const CalendarModal = () => {
       </DialogContent>
       <DialogActions>
         {
-          activeEvent ? 
+          activeEvent && !activeEvent.slot  ? 
             <Button onClick={ handleDelete } color="secondary"> Eliminar </Button> :
             <Button onClick={ closeModal } color="primary"> Cancelar </Button>
         }

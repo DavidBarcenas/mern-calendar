@@ -7,3 +7,16 @@ export const dateFormat = ( date ) => {
   }
   return '';
 }
+
+export const eventFormat = (e, user) => ({
+  id: new Date().getTime(),
+  title: e.title || '',
+  notes: e.notes || '',
+  start: dateFormat(e.start) || '',
+  end: dateFormat(moment(e.start).add(2, 'hours')) || '',
+  slot: false,
+  user: {
+    _id: '12354',
+    name: 'David Barcenas'
+  }
+})
