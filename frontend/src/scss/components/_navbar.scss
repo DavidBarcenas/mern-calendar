@@ -1,0 +1,40 @@
+.navbar__wrap.MuiAppBar-colorPrimary {
+  background: $primary;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, $primary, $secondary);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, $primary, $secondary); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+
+  &__title {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  &__username {
+    margin-left: 2em;
+    border-left: 1px solid rgba(#fff, .5);
+    padding-left: 2em;
+    display: none;
+
+    @media (min-width: 768px) {
+      display: inline-block;
+    }
+  }
+
+  .MuiButton-root {
+    color: #fff;
+    
+    .MuiIcon-root {
+      font-size: 18px;
+    }
+
+    span {
+      margin-left: .5em;
+      font-weight: normal;
+      text-transform: initial;
+    }
+  }
+}
