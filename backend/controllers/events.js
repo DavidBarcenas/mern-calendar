@@ -7,6 +7,9 @@ const getEvents   = (req, res, next) => {
 }
 
 const createEvent = (req, res, next) => {
+
+  console.log(req.body)
+
   return res.json({
     ok: true,
     msg: 'createEvent'
