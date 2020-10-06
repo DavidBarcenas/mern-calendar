@@ -76,10 +76,12 @@ const loginUser = async (req, res = response) => {
   }
 }
 
-const reValidateJWT = (req, res = response) => {
+const reValidateJWT = async (req, res = response) => {
+  const token = await generateJWT(req.uid, req.name)
+
   res.json({
     ok: true,
-    msg: 'JWT revalidate'
+    token
   })
 }
 
