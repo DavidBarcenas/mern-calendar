@@ -1,5 +1,6 @@
 import { tokenlessFetch } from "../../utils/fetch"
 import { types } from "../types/types"
+import { showAlert } from "./ui"
 
 export const startLogin = (email, pwd) => {
   return async (dispatch) => {
@@ -14,6 +15,8 @@ export const startLogin = (email, pwd) => {
         uid: body.uid,
         name: body.name
       }))
+    } else {
+      dispatch(showAlert('error', 'Prueba de alerta'))
     }
   }
 }
