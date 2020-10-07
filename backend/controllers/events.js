@@ -37,7 +37,7 @@ const updateEvent = async (req, res) => {
     const event = await Event.findById(eventId)
 
     if(!event) {
-      res.status(404).json({
+      return res.status(404).json({
         ok: false,
         msg: 'El evento no existe'
       })
@@ -68,11 +68,39 @@ const updateEvent = async (req, res) => {
   }
 }
 
-const deleteEvent = (req, res) => {
-  return res.json({
-    ok: true,
-    msg: 'deleteEvent'
-  })
+const deleteEvent = async (req, res) => {
+  const eventId = req.params.id;
+  const uid = req.uid
+  
+  try {
+    const event = await Event.findById(eventId)
+
+    if(!event) {
+      return res.status(404).json({
+        ok: false,
+        msg: 'El evento no existe'
+      })
+    }
+
+    if(event.user.toString() !== uid) {
+      return res.status(401).json({
+        ok: false,
+        msg: 'No tiene privilegios para eliminar este evento'
+      })
+    }
+
+    await Event.findByIdAndDelete(eventId)
+
+    res.json({
+      ok: true
+    })
+
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      msg: 'Contacte a su administrador'
+    })
+  }
 }
 
 
