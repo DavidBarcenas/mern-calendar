@@ -19,6 +19,11 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         observable: false,
       }
+    
+    case types.authLogout:
+      return {
+        observable: false,
+      }
     default:
       return state;
   }
