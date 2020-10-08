@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Icon, IconButton, Slide, TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { startSavingEvent, deleteEvent, eventSetActive, startUpdateEvent } from '../../redux/actions/events';
+import { startSavingEvent, startDeleteEvent, eventSetActive, startUpdateEvent } from '../../redux/actions/events';
 import { uiCloseModal } from '../../redux/actions/ui';
 import { dateFormat } from '../../utils/format';
 import moment from 'moment'
@@ -116,7 +116,7 @@ export const CalendarModal = () => {
   }
 
   const handleDelete = () => {
-    dispatch(deleteEvent())
+    dispatch(startDeleteEvent())
     dispatch(uiCloseModal())
     setFormValues(initEvent)
   }

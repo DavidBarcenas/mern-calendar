@@ -1,5 +1,6 @@
 import { tokenFetch, tokenlessFetch } from "../../utils/fetch"
 import { types } from "../types/types"
+import { clearEvents } from "./events"
 import { showAlert } from "./ui"
 
 export const startLogin = (email, pwd) => {
@@ -72,6 +73,7 @@ export const startLogout = () => {
   return (dispatch) => {
     localStorage.clear()
     dispatch(logout())
+    dispatch(clearEvents())
   }
 } 
 

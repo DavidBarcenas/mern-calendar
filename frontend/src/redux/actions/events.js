@@ -41,7 +41,7 @@ export const startUpdateEvent = (event) => {
     try {
       const resp = await tokenFetch(`events/${event.id}`, event, 'PUT')
       const body = await resp.json()
-      
+
      if(body.ok) {
       dispatch(updateEvent(event))
      }
@@ -57,6 +57,22 @@ const updateEvent = (event) => ({
   payload: event 
 })
 
+export const startDeleteEvent = () => {
+  return async (dispatch, getState) => {
+    const { id } = getState().calendar.activeEvent
+    try {
+      const resp = await tokenFetch(`events/${id}`, {}, 'DELETE')
+      const body = await resp.json()
+      
+     if(body.ok) {
+      dispatch(deleteEvent())
+     }
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
 export const deleteEvent = () => ({type: types.deleteEvent})
 
 export const getStartEvent = () => {
@@ -79,3 +95,5 @@ const getEvents = (events) => ({
   type: types.getAllEvents,
   payload: events
 })
+
+export const clearEvents = () => ({type: types.logoutEvent})

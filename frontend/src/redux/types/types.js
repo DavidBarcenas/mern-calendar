@@ -8,6 +8,7 @@ export const types = {
   updateEvent: '[event] Update event',
   deleteEvent: '[event] Delete event',
   saveEvent: '[event] Save Event',
+  logoutEvent: '[event] Clear events',
   getAllEvents: '[event] Get all',
   authObservable: '[auth] Checking login state',
   authObservableNext: '[auth] Finish checking login state',
