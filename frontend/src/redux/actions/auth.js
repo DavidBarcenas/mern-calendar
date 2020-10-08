@@ -16,7 +16,26 @@ export const startLogin = (email, pwd) => {
         name: body.name
       }))
     } else {
-      dispatch(showAlert('error', 'Prueba de alerta'))
+      dispatch(showAlert('error', body.msg))
+    }
+  }
+}
+
+export const startRegister = (email, pwd, name) => {
+  return async (dispatch) => {
+    const resp = await tokenlessFetch('auth/new', {email, name, pwd}, 'POST')
+    const body = await resp.json()
+
+    if(body.ok) {
+      localStorage.setItem('token', body.token)
+      localStorage.setItem('token-init', new Date().getTime())
+
+      dispatch(login({
+        uid: body.uid,
+        name: body.name
+      }))
+    } else {
+      dispatch(showAlert('error', body.msg))
     }
   }
 }

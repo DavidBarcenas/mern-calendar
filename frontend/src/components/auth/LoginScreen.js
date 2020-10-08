@@ -3,7 +3,8 @@ import TextField from '@material-ui/core/TextField';
 import { Button, useMediaQuery } from '@material-ui/core';
 import { useForm } from '../../hooks/useForm';
 import { useDispatch } from 'react-redux';
-import { startLogin } from '../../redux/actions/auth';
+import { startLogin, startRegister } from '../../redux/actions/auth';
+import { showAlert } from '../../redux/actions/ui';
 
 
 export const LoginScreen = () => {
@@ -19,9 +20,17 @@ export const LoginScreen = () => {
     lPwd: 'dave123'
   });
   
+  const [ formRegisterValues, handleRegisterInputChange ] = useForm({
+    rName: 'Daveepro',
+    rMail: 'daveepro@prueba.com',
+    rPwd: 'dave123',
+    rPwdConfirm: 'dave123'
+  });
+  
   const mq = useMediaQuery('(min-width: 768px)');
   const {signIn, animate} = loginAnimation
   const {lEmail, lPwd} = formLoginValues
+  const {rName, rMail, rPwd, rPwdConfirm} = formRegisterValues
 
   const handleAnimation = (isLogin) => {
     setLoginAnimation({ 
@@ -39,6 +48,15 @@ export const LoginScreen = () => {
   const handleLogin = (e) => {
     e.preventDefault()
     dispatch(startLogin(lEmail, lPwd))
+  }
+  
+  const handleRegister = (e) => {
+    e.preventDefault()
+    if(rPwd !== rPwdConfirm) {
+      dispatch(showAlert('error', 'Las contraseñas no son iguales'))
+      return false;
+    }
+    dispatch(startRegister(rMail, rPwd, rName))
   }
 
   return (
@@ -72,12 +90,40 @@ export const LoginScreen = () => {
             </div> : 
             <div className="login__signin"> 
               <h2 className="login__title">Registrarse</h2>
-              <form noValidate autoComplete="off">
-                <TextField label="Nombre" type="text" variant="outlined" />
-                <TextField label="Correo electrònico" type="email" variant="outlined" />
-                <TextField label="Contraseña" type="password" variant="outlined" />
-                <TextField label="Repetir contraseña" type="password" variant="outlined" />
-                <Button variant="outlined" color="primary"> Crear cuenta </Button>
+              <form noValidate autoComplete="off" onSubmit={handleRegister}>
+                <TextField 
+                  label="Nombre" 
+                  type="text" 
+                  variant="outlined" 
+                  name="rName" 
+                  value={rName}
+                  onChange={handleRegisterInputChange} 
+                />
+                <TextField 
+                  label="Correo electrònico" 
+                  type="email" 
+                  variant="outlined" 
+                  name="rMail" 
+                  value={rMail}
+                  onChange={handleRegisterInputChange} 
+                />
+                <TextField 
+                  label="Contraseña" 
+                  type="password" 
+                  variant="outlined" 
+                  name="rPwd" 
+                  value={rPwd}
+                  onChange={handleRegisterInputChange} 
+                />
+                <TextField 
+                  label="Repetir contraseña" 
+                  type="password" 
+                  variant="outlined" 
+                  name="rPwdConfirm" 
+                  value={rPwdConfirm}
+                  onChange={handleRegisterInputChange} 
+                />
+                <Button type="submit" variant="outlined" color="primary"> Crear cuenta </Button>
               </form>
             </div>
         }
