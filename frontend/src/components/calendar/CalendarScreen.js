@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import { Navbar } from '../ui/Navbar'
@@ -6,7 +6,7 @@ import { messages_es } from '../../utils/messages-es'
 import { CalendarEvent } from './CalendarEvent'
 import { CalendarModal } from './CalendarModal'
 import { uiOpenModal } from '../../redux/actions/ui'
-import { eventSetActive } from '../../redux/actions/events'
+import { eventSetActive, getStartEvent } from '../../redux/actions/events'
 import { Fab, Icon } from '@material-ui/core'
 import { eventFormat } from '../../utils/format'
 import moment from 'moment'
@@ -25,6 +25,7 @@ const formats = {
 export const CalendarScreen = () => {
   const dispatch = useDispatch()
   const {events, activeEvent} = useSelector(state => state.calendar)
+  const {user} = useSelector(state => state.auth)
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'month')
   
   const onDoubleClick = (e) => {
@@ -54,7 +55,7 @@ export const CalendarScreen = () => {
 
   const eventStyleGetter = (event, start, end, isSelected) => {
     const style = {
-      backgroundColor: '#396afc',
+      backgroundColor: (user.uid === event.user._id) ? '#396afc' : 'grey',
       borderLeft: '3px solid #396afc',
       borderRadius: '0',
       color: '#ffffff',
@@ -65,6 +66,10 @@ export const CalendarScreen = () => {
 
     return {style}
   }
+
+  useEffect(() => {
+    dispatch(getStartEvent())
+  }, [dispatch])
   
   return (
     <div className="calendar__wrapper">
