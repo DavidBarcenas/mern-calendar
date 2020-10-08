@@ -1,6 +1,31 @@
+import { tokenFetch } from "../../utils/fetch";
 import { types } from "../types/types";
 
-export const addNewEvent = (event) => ({ 
+export const startSavingEvent = (event) => {
+  return async (dispatch, getState) => {
+
+    const { user } = getState().auth
+    
+    try {
+      const resp = await tokenFetch('events', event, 'POST')
+      const body = await resp.json()
+
+      if(body.ok) {
+        event.id = body.event.id
+        event.user = {
+          _id: user.uid,
+          name: user.name
+        }
+        dispatch(addNewEvent(event))
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
+const addNewEvent = (event) => ({ 
   type: types.addNewEvent, 
   payload: event 
 })
