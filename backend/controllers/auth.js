@@ -81,7 +81,7 @@ const reValidateJWT = async (req, res = response) => {
 
   res.json({
     ok: true,
-    uid: req.id,
+    uid: req.uid,
     name: req.name,
     token
   })

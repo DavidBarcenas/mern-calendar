@@ -54,7 +54,6 @@ export const startChecking = () => {
         name: body.name
       }))
     } else {
-      dispatch(showAlert('error', body.msg))
       dispatch(observableFinish())
     }
   }
