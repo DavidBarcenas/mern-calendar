@@ -13,6 +13,12 @@ export const authReducer = (state = initialState, action) => {
         observable: false,
         user: action.payload
       }
+    
+    case types.authObservableNext:
+      return {
+        ...state,
+        observable: false,
+      }
     default:
       return state;
   }
