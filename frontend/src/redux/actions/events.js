@@ -36,7 +36,23 @@ export const eventSetActive = (event) => ({
   payload: event 
 })
 
-export const updateEvent = (event) => ({ 
+export const startUpdateEvent = (event) => {
+  return async (dispatch) => {
+    try {
+      const resp = await tokenFetch(`events/${event.id}`, event, 'PUT')
+      const body = await resp.json()
+      
+     if(body.ok) {
+      dispatch(updateEvent(event))
+     }
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
+const updateEvent = (event) => ({ 
   type: types.updateEvent, 
   payload: event 
 })
