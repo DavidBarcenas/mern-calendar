@@ -14,7 +14,7 @@ export const Navbar = () => {
       <Toolbar className="navbar">
         <div>
           <span className="navbar__title">Calendar App</span>
-          <span className="navbar__username">Buen día, {user.name}</span>
+          <span className="navbar__username">Hola, {user.name}</span>
         </div>
       
         <Button onClick={handleLogout}>

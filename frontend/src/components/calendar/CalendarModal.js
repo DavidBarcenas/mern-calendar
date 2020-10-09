@@ -131,8 +131,8 @@ export const CalendarModal = () => {
       keepMounted
     >
       <DialogTitle id="alert-dialog-slide-title">
-        <span>{activeEvent && !activeEvent.slot ? 'Editar evento' : 'Crear evento'}</span>
-        <IconButton onClick={closeModal}> <Icon>Cancel</Icon> </IconButton >
+        <span>{activeEvent && activeEvent.title !== '' ? 'Editar evento' : 'Crear evento'}</span>
+        <IconButton onClick={closeModal}> <Icon>cancel</Icon> </IconButton >
       </DialogTitle>
       <DialogContent>
         <form noValidate autoComplete="off">
