@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk';
-import { startLogin, startRegister } from '../../redux/actions/auth';
+import { startChecking, startLogin, startRegister } from '../../redux/actions/auth';
 import { types } from '../../redux/types/types'
 import * as FetchModule from '../../utils/fetch'
 
@@ -66,6 +66,30 @@ describe('actions testing', () => {
     await store.dispatch(startRegister('test@mail.com', 'test123', 'tester'))
     const actions = store.getActions()
 
+    expect(actions[0]).toEqual({
+      type: types.authLogin,
+      payload: {
+        uid: '123',
+        name: 'Daveepro',
+      }
+    })
+  })
+  
+
+  test('correct execution of the observable', async () => {
+    FetchModule.tokenFetch = jest.fn(() => ({
+      json() {
+        return {
+          ok: true,
+          uid: '123',
+          name: 'Daveepro',
+          toke: '123asdf45'
+        }
+      }
+    }))
+
+    await store.dispatch(startChecking())
+    const actions = store.getActions()
     expect(actions[0]).toEqual({
       type: types.authLogin,
       payload: {
