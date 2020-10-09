@@ -36,4 +36,18 @@ describe('actions testing', () => {
     // token = localStorage.setItem.mock.calls[0][1]
   })
     
+
+  test('startLogin should be wrong', async () => {
+    await store.dispatch(startLogin('davee@gmail.com', 'dave12334'))
+    const actions = store.getActions()
+
+    expect(actions[0]).toEqual({
+      type: types.uiShowAlert,
+      payload: {
+        typeAlert: 'error',
+        message: 'El correo o la contraseña es incorrecto'
+      }
+    })
+  })
+  
 })
