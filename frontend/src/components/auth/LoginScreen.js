@@ -16,15 +16,15 @@ export const LoginScreen = () => {
   })
   
   const [ formLoginValues, handleLoginInputChange ] = useForm({
-    lEmail: 'davee@gmail.com',
-    lPwd: 'dave123'
+    lEmail: '',
+    lPwd: ''
   });
   
   const [ formRegisterValues, handleRegisterInputChange ] = useForm({
-    rName: 'Daveepro',
-    rMail: 'daveepro@prueba.com',
-    rPwd: 'dave123',
-    rPwdConfirm: 'dave123'
+    rName: '',
+    rMail: '',
+    rPwd: '',
+    rPwdConfirm: ''
   });
   
   const mq = useMediaQuery('(min-width: 768px)');
@@ -47,6 +47,10 @@ export const LoginScreen = () => {
   
   const handleLogin = (e) => {
     e.preventDefault()
+    if(lEmail === '' || lPwd === '') {
+      dispatch(showAlert('error', 'El email y la contraseña son requeridos'))
+      return false;
+    }
     dispatch(startLogin(lEmail, lPwd))
   }
   
